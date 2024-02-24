@@ -1,0 +1,89 @@
+<meta charset="utf-8" emacsmode="-*- markdown -*">
+**Single View to 3D**
+
+Name: Omkar Chittar 
+
+Exploring loss functions
+===============================================================================
+
+Fitting a voxel grid
+-------------------------------------------------------------------------------
+Ground Truth Voxel Grid | Optimized Voxel Grid
+------------------------|---------------------
+![](gt_vox_grid.gif) | ![](opt_vox_grid.gif)
+
+Fitting a point cloud
+-------------------------------------------------------------------------------
+Ground Truth Point Cloud | Optimized Point Cloud
+-------------------------|---------------------
+![](gt_pointcloud.gif) | ![](opt_pointcloud.gif)
+
+Fitting a mesh
+-------------------------------------------------------------------------------
+Ground Truth Mesh | Optimized Mesh
+------------------------|---------------------
+![](gt_mesh.gif) | ![](opt_mesh.gif)
+
+Reconstructing 3D from single view
+===============================================================================
+
+Image to voxel grid
+-------------------------------------------------------------------------------
+ Input Image | Ground Truth Voxel Grid | Predicted Voxel Grid
+------------|-------------------------|---------------------
+![](RGB_voxel_1.png) | ![](SingletoVox_gtvox_1.gif) | ![](SingletoVox_pred_1.gif)
+![](RGB_voxel_2.png) | ![](SingletoVox_gtvox_2.gif) | ![](SingletoVox_pred_2.gif)
+![](RGB_voxel_3.png) | ![](SingletoVox_gtvox_3.gif) | ![](SingletoVox_pred_3.gif)
+
+Image to point cloud
+-------------------------------------------------------------------------------
+ Input Image | Ground Truth Point Cloud | Predicted Point Cloud
+------------|-------------------------|---------------------
+![](RGB_pointcloud_0.png) | ![](SingletoPC_gt_0.gif) | ![](SingletoPC_pred_0.gif)
+![](RGB_pointcloud_1.png) | ![](SingletoPC_gt_1.gif) | ![](SingletoPC_pred_1.gif)
+![](RGB_pointcloud_3.png) | ![](SingletoPC_gt_3.gif) | ![](SingletoPC_pred_3.gif)
+
+Image to mesh
+-------------------------------------------------------------------------------
+ Input Image | Ground Truth Mesh | Predicted Mesh
+------------|-------------------------|---------------------
+![](RGB_mesh_0.png) | ![](SingletoMesh_gtmesh_0.gif) | ![](SingletoMesh_pred_0.gif)
+![](RGB_mesh_4.png) | ![](SingletoMesh_gtmesh_4.gif) | ![](SingletoMesh_pred_4.gif)
+![](RGB_mesh_6.png) | ![](SingletoMesh_gtmesh_6.gif) | ![](SingletoMesh_pred_6.gif)
+
+Quantitative comparisions
+-------------------------------------------------------------------------------
+Training the Voxel Grid model proved to be more challenging due to the necessity of employing complex architectures that involve 3D convolutions instead of fully connected (FC) layers. This architectural complexity partially accounts for the lower F1 score achieved in comparison to the other two prediction methods.
+
+On the other hand, the Point Cloud and Mesh prediction models exhibited significantly higher average F1 scores. 
+
+The Point Cloud prediction task, in particular, is comparatively easier because it doesn't require predicting connectivity information. In contrast, Mesh prediction necessitates capturing both the geometric shape and the connectivity information, making it a more intricate task that, while challenging, is ultimately rewarding in terms of higher F1 scores.
+
+ Voxel Grid | Point Cloud | Mesh
+-----------|-------------|------
+![Avg F1@0.05 = 54.374](eval_vox.png) | ![Avg F1@0.05 = 86.921](eval_point.png) | ![Avg F1@0.05 = 73.156](eval_mesh.png) 
+
+Analyze effects of hyperparmeter variations
+-------------------------------------------------------------------------------
+| Effects of variation of the hyperparameter *n_points* on predictions:
+ 1000 | 5000 | 10000 
+-----|------|------
+![](n_points_1000.gif) | ![](n_points_5000.gif) | ![](n_points_10000.gif)  
+![](eval_point_n_points-1000.png) | ![](eval_point_n_points-5000.png) | ![](eval_point_n_points-10000.png)
+
+From the above plots it is evident that the model is unable to learn much during training with fewer number of points.
+
+At lower n_points, the model learns generic things and misses out on the finer details.
+
+The F1 score increases as we increase the number of points from 1000 to 5000, after which there is a slight decline in the F1 score. 
+
+
+Interpret your model
+-------------------------------------------------------------------------------
+| Mesh Deformations Through Iterations |
+|--------------------------------------|
+| ![](mesh_development.gif) |
+
+
+<!-- Markdeep: --><style class="fallback">body{visibility:hidden;white-space:pre;font-family:monospace}</style><script src="markdeep.min.js" charset="utf-8"></script><script src="https://morgan3d.github.io/markdeep/latest/markdeep.min.js?" charset="utf-8"></script><script>window.alreadyProcessedMarkdeep||(document.body.style.visibility="visible")</script>
+
